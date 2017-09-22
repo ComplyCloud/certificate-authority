@@ -1,0 +1,49 @@
+{
+  "name": "@complycloud/certificate-authority",
+  "version": "0.0.0",
+  "description": "ComplyCloud certificate authority microservice",
+  "main": "src",
+  "repository": "https://github.com/complycloud/certificate-authority",
+  "author": "Sean Bruton <sean@sean.cloud>",
+  "license": "MIT",
+  "scripts": {
+    "check": "yarn lint && yarn test",
+    "clean": "rm -rf ./dist",
+    "compile": "npm run clean && babel src ${WATCH:+--watch} --source-maps inline --out-dir dist",
+    "compile:watch": "WATCH=true yarn compile",
+    "lint": "eslint src test",
+    "service:watch": "NODE_OPTIONS=--expose-http2 NODE_ENV=local SERVICE_ENTRYPOINT_DIR=src babel-watch -D -w . -x dist -x node_modules -x test src/service.js | bunyan -Lo short",
+    "test": "mocha ${WATCH:+--watch} ${DEBUGGER:+--inspect --debug-brk} --recursive --compilers js:babel-register",
+    "test:watch": "WATCH=true yarn test"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^7.2.3",
+    "babel-preset-env": "^1.6.0",
+    "babel-register": "^6.26.0",
+    "babel-watch": "^2.0.7",
+    "bunyan": "^1.8.12",
+    "chai": "^4.1.1",
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb-base": "^11.3.2",
+    "eslint-plugin-import": "^2.7.0",
+    "mocha": "^3.5.0",
+    "pre-commit": "^1.2.2",
+    "supertest": "^3.0.0"
+  },
+  "pre-commit": [
+    "check"
+  ],
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": true
+          }
+        }
+      ]
+    ]
+  }
+}
