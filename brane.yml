@@ -1,0 +1,4 @@
+log:
+  level: trace
+rest:
+  port: 8080

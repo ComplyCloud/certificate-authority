@@ -12,8 +12,8 @@
     "compile": "npm run clean && babel src ${WATCH:+--watch} --source-maps inline --out-dir dist",
     "compile:watch": "WATCH=true yarn compile",
     "lint": "eslint src test",
-    "service": "babel-node node_modules/@complycloud/brane/src/brane-cli.js | bunyan -Lo short",
-    "service:watch": "babel-watch -D -w src -w node_modules/@complycloud/brane node_modules/@complycloud/brane/src/brane-cli.js | bunyan -Lo short",
+    "service": "SERVICE_NAME=ca babel-node node_modules/@complycloud/brane/src/brane-cli.js | bunyan -Lo short",
+    "service:watch": "SERVICE_NAME=ca babel-watch -D -w src -w node_modules/@complycloud/brane/src -w node_modules/@complycloud/brane-bunyan/src -w node_modules/@complycloud/brane-config/src -w node_modules/@complycloud/brane-graphql/src -w node_modules/@complycloud/brane-rest/src node_modules/@complycloud/brane/src/brane-cli.js | bunyan -Lo short",
     "test": "mocha ${WATCH:+--watch} ${DEBUGGER:+--inspect --debug-brk} --recursive --compilers js:babel-register",
     "test:watch": "WATCH=true yarn test"
   },
@@ -45,5 +45,8 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "lodash": "^4.17.4"
   }
 }
