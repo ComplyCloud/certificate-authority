@@ -12,7 +12,8 @@
     "compile": "npm run clean && babel src ${WATCH:+--watch} --source-maps inline --out-dir dist",
     "compile:watch": "WATCH=true yarn compile",
     "lint": "eslint src test",
-    "service:watch": "NODE_OPTIONS=--expose-http2 NODE_ENV=local SERVICE_ENTRYPOINT_DIR=src babel-watch -D -w . -x dist -x node_modules -x test src/service.js | bunyan -Lo short",
+    "service": "babel-node node_modules/@complycloud/brane/src/brane-cli.js | bunyan -Lo short",
+    "service:watch": "babel-watch -D -w src -w node_modules/@complycloud/brane node_modules/@complycloud/brane/src/brane-cli.js | bunyan -Lo short",
     "test": "mocha ${WATCH:+--watch} ${DEBUGGER:+--inspect --debug-brk} --recursive --compilers js:babel-register",
     "test:watch": "WATCH=true yarn test"
   },
@@ -22,7 +23,6 @@
     "babel-preset-env": "^1.6.0",
     "babel-register": "^6.26.0",
     "babel-watch": "^2.0.7",
-    "bunyan": "^1.8.12",
     "chai": "^4.1.1",
     "eslint": "^4.5.0",
     "eslint-config-airbnb-base": "^11.3.2",
