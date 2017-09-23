@@ -36,6 +36,9 @@ export default class CertificateRequested extends Event {
 
   project() {
     return {
+      id: this.id,
+      requestedAt: this.timestamp,
+      processed: !!this.processed,
       subject: {
         commonName: this.commonName,
         countryName: this.countryName,
@@ -43,6 +46,8 @@ export default class CertificateRequested extends Event {
         localityName: this.localityName,
         organizationName: this.organizationName,
         organizationalUnitName: this.organizationalUnitName,
+      },
+      extensions: {
         subjectAlternativeNames: this.subjectAlternativeNames,
       },
     };
