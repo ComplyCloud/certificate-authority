@@ -39,6 +39,9 @@ export default class CertificateRequested extends Event {
       id: this.id,
       requestedAt: this.timestamp,
       processed: !!this.processed,
+      denied: !!this.denied,
+      issued: !!this.issued,
+      certificateId: this.certificateId,
       subject: {
         commonName: this.commonName,
         countryName: this.countryName,

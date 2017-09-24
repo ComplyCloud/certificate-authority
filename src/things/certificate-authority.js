@@ -60,6 +60,8 @@ export default class CertificateAuthority extends Thing {
     if (certificateRequestIdx == null) throw new Errors.CertificateRequestNotFound();
     if (certificateRequests[certificateRequestIdx].processed) throw new Errors.CertificateRequestAlreadyProcessed();
     certificateRequests[certificateRequestIdx].processed = true;
+    certificateRequests[certificateRequestIdx].issued = true;
+    certificateRequests[certificateRequestIdx].certificateId = this.id;
     this.notBefore = new Date();
     this.notAfter = new Date();
     this.notAfter.setTime(this.notBefore.getTime() + (this.days * 86400000)); // 8.64e+7 ms in a day
@@ -86,6 +88,24 @@ export default class CertificateAuthority extends Thing {
     if (certificates[certificateIdx].revoked) throw new Errors.CertificateAlreadyRevoked();
     certificates[certificateIdx].revoked = true;
     this.log.info({ certificateId: this.certificateId }, 'certificate revoked');
+    return this.project();
+  }
+
+  static async handleCertificateDenied() {
+    this.log.info({ certificateRequestId: this.certificateRequestId }, 'processing certificate denial');
+    let certificateRequestIdx = null;
+    certificateRequests.some((request, i) => {
+      if (request.id === this.certificateRequestId) {
+        certificateRequestIdx = i;
+        return true;
+      }
+      return false;
+    });
+    if (certificateRequestIdx == null) throw new Errors.CertificateRequestNotFound();
+    if (certificateRequests[certificateRequestIdx].processed) throw new Errors.CertificateRequestAlreadyProcessed();
+    certificateRequests[certificateRequestIdx].processed = true;
+    certificateRequests[certificateRequestIdx].denied = true;
+    this.log.info({ certificateRequestId: this.certificateRequestId }, 'certificate denied');
     return this.project();
   }
 
